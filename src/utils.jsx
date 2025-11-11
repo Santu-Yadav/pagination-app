@@ -1,10 +1,14 @@
-const paginate = (followers) => {
-  const itemsPerPage = 8;
+const paginate = (followers, itemsPerPage) => {
+  
   const numberOfPages = Math.ceil(followers.length / itemsPerPage);
-  // console.log("numberOfPages @@ :", numberOfPages);
+  console.log("numberOfPages @@ :", numberOfPages);
 
   const newFollowers = Array.from({ length: numberOfPages }, (_, index) => {
     const start = index * itemsPerPage;
+
+    console.log("start $$$$$ :", start);
+    console.log("start + itemsPerPage $$$$$ :", start + itemsPerPage);
+
     return followers.slice(start, start + itemsPerPage);
   });
 
@@ -13,3 +17,6 @@ const paginate = (followers) => {
 };
 
 export default paginate;
+
+// console.log("start $$$$$ :", start);
+// console.log("itemsPerPage $$$$$ :", itemsPerPage);

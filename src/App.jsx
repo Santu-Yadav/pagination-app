@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { useFetch } from "./useFetch";
 import Follower from "./Follower";
+import paginate from "./utils";
 
 function App() {
   const { loading, data } = useFetch();
+  const [eachPageData, setEachPageData] = useState([]);
   const [page, setPage] = useState(0);
-  const [followers, setFollowers] = useState([]);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
 
   useEffect(() => {
     if (loading) return;
-    setFollowers(data[page]);
-  }, [loading, page]);
+    setEachPageData(paginate(data, +itemsPerPage));
+  }, [loading, data, itemsPerPage]);
+
+  let followers;
+  if (eachPageData) {
+    followers = eachPageData[page];
+  }
 
   const nextPage = () => {
     setPage((oldPage) => {
       let nextPage = oldPage + 1;
-      if (nextPage > data.length - 1) {
+      if (nextPage > eachPageData.length - 1) {
         nextPage = 0;
       }
       return nextPage;
@@ -26,7 +33,7 @@ function App() {
     setPage((oldPage) => {
       let prevPage = oldPage - 1;
       if (prevPage < 0) {
-        prevPage = data.length - 1;
+        prevPage = eachPageData.length - 1;
       }
       return prevPage;
     });
@@ -36,9 +43,11 @@ function App() {
     setPage(index);
   };
 
-  const handleChange = (e) => {
+  const handleDropDownChange = (e) => {
     console.log(" e.target.value @@ :", e.target.value);
+    setItemsPerPage(e.target.value);
   };
+
   return (
     <main>
       <div className="section-title">
@@ -50,7 +59,11 @@ function App() {
         {!loading && (
           <div>
             <label htmlFor="test">Items per page</label>
-            <select id="test" onChange={handleChange}>
+            <select
+              id="test"
+              onChange={handleDropDownChange}
+              value={itemsPerPage}
+            >
               <option value="8">8</option>
               <option value="10">10</option>
               <option value="12">12</option>
@@ -60,9 +73,11 @@ function App() {
       </div>
       <section className="followers">
         <div className="container">
-          {followers.map((follower) => {
-            return <Follower key={follower.id} {...follower} />;
-          })}
+          {/* {console.log("followers @@ :", followers)} */}
+          {followers &&
+            followers.map((follower) => {
+              return <Follower key={follower.id} {...follower} />;
+            })}
         </div>
         {!loading && (
           <div className="btn-container">
@@ -70,7 +85,7 @@ function App() {
               prev
             </button>
 
-            {data.map((item, index) => {
+            {eachPageData.map((item, index) => {
               return (
                 <button
                   key={index}

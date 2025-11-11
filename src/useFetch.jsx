@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import paginate from "./utils";
+// import paginate from "./utils";
 const url = "https://api.github.com/users/john-smilga/followers?per_page=100";
 
 export const useFetch = () => {
@@ -9,8 +9,9 @@ export const useFetch = () => {
   const getProducts = async () => {
     const response = await fetch(url);
     const data = await response.json();
-    console.log("data @@ :", data);
-    setData(paginate(data));
+    // console.log("data @@ :", data);
+    // setData(paginate(data));
+    setData(data);
     setLoading(false);
   };
 
