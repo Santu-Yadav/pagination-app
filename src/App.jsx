@@ -11,7 +11,12 @@ function App() {
 
   useEffect(() => {
     if (loading) return;
-    setEachPageData(paginate(data, itemsPerPage));
+
+    if (Array.isArray(data) && data.length > 0) {
+      setEachPageData(paginate(data, itemsPerPage));
+    } else {
+      setEachPageData([]);
+    }
   }, [loading, data, itemsPerPage]);
 
   useEffect(() => {
@@ -62,11 +67,18 @@ function App() {
     <main>
       <div className="section-title">
         <div>
-          <h1>{loading ? "loading..." : "Followers"}</h1>
-          {/* <div className="underline"></div> */}
+          {/* <h1>{loading ? "loading..." : "Followers"}</h1> */}
+
+          <h1>
+            {loading
+              ? "loading..."
+              : eachPageData.length > 0
+              ? "Followers"
+              : "Please try again"}
+          </h1>
         </div>
 
-        {!loading && (
+        {!loading && eachPageData.length > 0 && (
           <div>
             <label htmlFor="test">Items per page</label>
             <select
@@ -89,7 +101,7 @@ function App() {
               return <Follower key={follower.id} {...follower} />;
             })}
         </div>
-        {!loading && (
+        {!loading && eachPageData.length > 0 && (
           <div className="btn-container">
             <button className="prev-btn" onClick={prevPage}>
               prev
