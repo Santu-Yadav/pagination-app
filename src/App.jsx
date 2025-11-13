@@ -11,12 +11,22 @@ function App() {
 
   useEffect(() => {
     if (loading) return;
-    setEachPageData(paginate(data, +itemsPerPage));
+    setEachPageData(paginate(data, itemsPerPage));
   }, [loading, data, itemsPerPage]);
 
-  let followers;
-  if (eachPageData) {
-    followers = eachPageData[page];
+  useEffect(() => {
+    if (!eachPageData || eachPageData.length === 0) return;
+
+    const lastIndex = eachPageData.length - 1;
+    if (page > lastIndex) {
+      setPage(0);
+    }
+  }, [eachPageData.length, page]);
+
+  let followers = [];
+  if (eachPageData && eachPageData.length > 0) {
+    const lastIndex = eachPageData.length - 1;
+    followers = page <= lastIndex ? eachPageData[page] : eachPageData[0];
   }
 
   const nextPage = () => {
@@ -45,7 +55,7 @@ function App() {
 
   const handleDropDownChange = (e) => {
     console.log(" e.target.value @@ :", e.target.value);
-    setItemsPerPage(e.target.value);
+    setItemsPerPage(parseInt(e.target.value, 10) || 8);
   };
 
   return (

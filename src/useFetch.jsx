@@ -9,8 +9,7 @@ export const useFetch = () => {
   const getProducts = async () => {
     const response = await fetch(url);
     const data = await response.json();
-    // console.log("data @@ :", data);
-    // setData(paginate(data));
+
     setData(data);
     setLoading(false);
   };
@@ -21,3 +20,6 @@ export const useFetch = () => {
 
   return { loading, data };
 };
+
+// console.log("data @@ :", data);
+// setData(paginate(data));
