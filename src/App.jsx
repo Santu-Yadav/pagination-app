@@ -1,3 +1,9 @@
+/* work next on this --> if number of followers returned is 7. Then, prev, next and pagination 
+button should not be displayed. 
+
+15-11-2025 : above mentioned features has been implemented. 
+*/
+
 import React, { useState, useEffect } from "react";
 import { useFetch } from "./useFetch";
 import Follower from "./Follower";
@@ -101,12 +107,16 @@ function App() {
               return <Follower key={follower.id} {...follower} />;
             })}
         </div>
-        {!loading && eachPageData.length > 0 && (
+        {!loading && eachPageData.length > 1 && (
           <div className="btn-container">
             <button className="prev-btn" onClick={prevPage}>
               prev
             </button>
 
+            {console.log(
+              "eachPageData @@@--######--@@@ :",
+              eachPageData.length
+            )}
             {eachPageData.map((item, index) => {
               return (
                 <button
