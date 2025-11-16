@@ -1,3 +1,9 @@
+/* work next on this --> if number of followers returned is 7. Then, prev, next and pagination 
+button should not be displayed. 
+
+15-11-2025 : above mentioned features has been implemented. 
+*/
+
 import React, { useState, useEffect } from "react";
 import { useFetch } from "./useFetch";
 import Follower from "./Follower";
@@ -11,12 +17,27 @@ function App() {
 
   useEffect(() => {
     if (loading) return;
-    setEachPageData(paginate(data, +itemsPerPage));
+
+    if (Array.isArray(data) && data.length > 0) {
+      setEachPageData(paginate(data, itemsPerPage));
+    } else {
+      setEachPageData([]);
+    }
   }, [loading, data, itemsPerPage]);
 
-  let followers;
-  if (eachPageData) {
-    followers = eachPageData[page];
+  useEffect(() => {
+    if (!eachPageData || eachPageData.length === 0) return;
+
+    const lastIndex = eachPageData.length - 1;
+    if (page > lastIndex) {
+      setPage(0);
+    }
+  }, [eachPageData.length, page]);
+
+  let followers = [];
+  if (eachPageData && eachPageData.length > 0) {
+    const lastIndex = eachPageData.length - 1;
+    followers = page <= lastIndex ? eachPageData[page] : eachPageData[0];
   }
 
   const nextPage = () => {
@@ -45,18 +66,25 @@ function App() {
 
   const handleDropDownChange = (e) => {
     console.log(" e.target.value @@ :", e.target.value);
-    setItemsPerPage(e.target.value);
+    setItemsPerPage(parseInt(e.target.value, 10) || 8);
   };
 
   return (
     <main>
       <div className="section-title">
         <div>
-          <h1>{loading ? "loading..." : "Followers"}</h1>
-          {/* <div className="underline"></div> */}
+          {/* <h1>{loading ? "loading..." : "Followers"}</h1> */}
+
+          <h1>
+            {loading
+              ? "loading..."
+              : eachPageData.length > 0
+              ? "Followers"
+              : "Please try again"}
+          </h1>
         </div>
 
-        {!loading && (
+        {!loading && eachPageData.length > 0 && (
           <div>
             <label htmlFor="test">Items per page</label>
             <select
@@ -79,12 +107,16 @@ function App() {
               return <Follower key={follower.id} {...follower} />;
             })}
         </div>
-        {!loading && (
+        {!loading && eachPageData.length > 1 && (
           <div className="btn-container">
             <button className="prev-btn" onClick={prevPage}>
               prev
             </button>
 
+            {console.log(
+              "eachPageData @@@--######--@@@ :",
+              eachPageData.length
+            )}
             {eachPageData.map((item, index) => {
               return (
                 <button
