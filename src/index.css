@@ -126,9 +126,23 @@ p {
 Pagination
 ===============
 */
+
+.search-box {
+  text-align: right;
+  margin: 1rem;
+}
+
+.search-box-style {
+  height: 2.5rem;
+  width: 25rem;
+  padding: 1rem;
+  border-radius: 0.6rem;
+  border: 0.13rem solid grey;
+}
+
 .section-title {
   text-align: justify;
-  margin: 4rem 0 6rem 0;
+  margin: 0 0 0 0;
 }
 .underline {
   width: 14rem;

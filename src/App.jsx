@@ -1,8 +1,4 @@
-/* work next on this --> if number of followers returned is 7. Then, prev, next and pagination 
-button should not be displayed. 
-
-15-11-2025 : above mentioned features has been implemented. 
-*/
+/* 17-11-2025 : implement case-insensitive prefix match */
 
 import React, { useState, useEffect } from "react";
 import { useFetch } from "./useFetch";
@@ -15,15 +11,19 @@ function App() {
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(8);
 
+  const [searchInput, setSearchInput] = useState("");
+
   useEffect(() => {
     if (loading) return;
 
     if (Array.isArray(data) && data.length > 0) {
-      setEachPageData(paginate(data, itemsPerPage));
+      let filteredData =
+        searchInput.length !== 0 ? matched(data, searchInput) : data;
+      setEachPageData(paginate(filteredData, itemsPerPage));
     } else {
       setEachPageData([]);
     }
-  }, [loading, data, itemsPerPage]);
+  }, [loading, data, itemsPerPage, searchInput]);
 
   useEffect(() => {
     if (!eachPageData || eachPageData.length === 0) return;
@@ -69,12 +69,35 @@ function App() {
     setItemsPerPage(parseInt(e.target.value, 10) || 8);
   };
 
+  const handleSearchBoxChange = (e) => {
+    console.log("search box change @@@@@ : ", e.target.value);
+    setSearchInput(e.target.value);
+  };
+
+  function matched(data, input) {
+    return data.filter(({ login }) => {
+      if (input.length > login.length) return false;
+
+      for (let i = 0; i < input.length; i++) {
+        if (input[i] !== login[i]) return false;
+      }
+
+      return true;
+    });
+  }
+
   return (
     <main>
+      <div className="search-box">
+        <input
+          className="search-box-style"
+          value={searchInput}
+          placeholder="Search"
+          onChange={handleSearchBoxChange}
+        />
+      </div>
       <div className="section-title">
         <div>
-          {/* <h1>{loading ? "loading..." : "Followers"}</h1> */}
-
           <h1>
             {loading
               ? "loading..."
@@ -113,10 +136,6 @@ function App() {
               prev
             </button>
 
-            {console.log(
-              "eachPageData @@@--######--@@@ :",
-              eachPageData.length
-            )}
             {eachPageData.map((item, index) => {
               return (
                 <button
@@ -139,3 +158,9 @@ function App() {
 }
 
 export default App;
+
+//----------------------------------------------------------------------------------
+// {console.log(
+//   "eachPageData @@@--######--@@@ :",
+//   eachPageData.length
+// )}
