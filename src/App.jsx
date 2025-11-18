@@ -75,11 +75,18 @@ function App() {
   };
 
   function matched(data, input) {
-    return data.filter(({ login }) => {
-      if (input.length > login.length) return false;
+    if (!Array.isArray(data)) return [];
 
-      for (let i = 0; i < input.length; i++) {
-        if (input[i] !== login[i]) return false;
+    const q = (input || "").trim().toLowerCase();
+    if (q.length === 0) return data;
+
+    return data.filter(({ login }) => {
+      const loginLower = login.toLowerCase();
+
+      if (q.length > loginLower.length) return false;
+
+      for (let i = 0; i < q.length; i++) {
+        if (q[i] !== loginLower[i]) return false;
       }
 
       return true;
