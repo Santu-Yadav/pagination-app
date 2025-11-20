@@ -12,18 +12,20 @@ function App() {
   const [itemsPerPage, setItemsPerPage] = useState(8);
 
   const [searchInput, setSearchInput] = useState("");
+  const [debouncedInput, setDebouncedInput] = useState("");
 
   useEffect(() => {
     if (loading) return;
 
     if (Array.isArray(data) && data.length > 0) {
       let filteredData =
-        searchInput.length !== 0 ? matched(data, searchInput) : data;
+        debouncedInput.length !== 0 ? matched(data, debouncedInput) : data;
+
       setEachPageData(paginate(filteredData, itemsPerPage));
     } else {
       setEachPageData([]);
     }
-  }, [loading, data, itemsPerPage, searchInput]);
+  }, [loading, data, itemsPerPage, debouncedInput]);
 
   useEffect(() => {
     if (!eachPageData || eachPageData.length === 0) return;
@@ -33,6 +35,32 @@ function App() {
       setPage(0);
     }
   }, [eachPageData.length, page]);
+
+  useEffect(() => {
+    //******************************************************************
+    // 1. debounce function. (I need to write)
+    function debounce(func, delay) {
+      let timer;
+
+      return function (arg) {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+          func(arg);
+        }, delay);
+      };
+    }
+    // 2. function to be debounced. (matched function)
+    function functionToBeDebounced(inputValue) {
+      console.log("***** running debounced function ******");
+      setDebouncedInput(inputValue);
+    }
+
+    // 3. create a debounced version of search function.
+    const debouncedSearch = debounce(functionToBeDebounced, 5000);
+
+    //******************************************************************
+    debouncedSearch(searchInput);
+  }, [searchInput]);
 
   let followers = [];
   if (eachPageData && eachPageData.length > 0) {
@@ -65,7 +93,6 @@ function App() {
   };
 
   const handleDropDownChange = (e) => {
-    console.log(" e.target.value @@ :", e.target.value);
     setItemsPerPage(parseInt(e.target.value, 10) || 8);
   };
 
