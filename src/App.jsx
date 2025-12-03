@@ -15,6 +15,7 @@ function App() {
   const [debouncedInput, setDebouncedInput] = useState("");
 
   useEffect(() => {
+    console.log(" *****Inside change debouncedInput****** ");
     if (loading) return;
 
     if (Array.isArray(data) && data.length > 0) {
@@ -37,29 +38,11 @@ function App() {
   }, [eachPageData.length, page]);
 
   useEffect(() => {
-    //******************************************************************
-    // 1. debounce function. (I need to write)
-    function debounce(func, delay) {
-      let timer;
+    let timerId = setTimeout(() => {
+      setDebouncedInput(searchInput);
+    }, 1000);
 
-      return function (arg) {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-          func(arg);
-        }, delay);
-      };
-    }
-    // 2. function to be debounced. (matched function)
-    function functionToBeDebounced(inputValue) {
-      console.log("***** running debounced function ******");
-      setDebouncedInput(inputValue);
-    }
-
-    // 3. create a debounced version of search function.
-    const debouncedSearch = debounce(functionToBeDebounced, 5000);
-
-    //******************************************************************
-    debouncedSearch(searchInput);
+    return () => clearTimeout(timerId);
   }, [searchInput]);
 
   let followers = [];
