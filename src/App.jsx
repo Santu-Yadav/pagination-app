@@ -1,33 +1,39 @@
 /* 17-11-2025 : implement case-insensitive prefix match */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useFetch } from "./useFetch";
 import Follower from "./Follower";
 import paginate from "./utils";
 
 function App() {
   const { loading, data } = useFetch();
-  const [eachPageData, setEachPageData] = useState([]);
+  // const [eachPageData, setEachPageData] = useState([]);
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(8);
 
   const [searchInput, setSearchInput] = useState("");
   const [debouncedInput, setDebouncedInput] = useState("");
 
-  useEffect(() => {
-    console.log(" *****Inside change debouncedInput****** ");
-    if (loading) return;
+  // useEffect(() => {
+  //   if (loading) return;
 
-    if (Array.isArray(data) && data.length > 0) {
-      let filteredData =
-        debouncedInput.length !== 0 ? matched(data, debouncedInput) : data;
+  //   if (Array.isArray(data) && data.length > 0) {
+  //     let filteredData =
+  //       debouncedInput.length !== 0 ? matched(data, debouncedInput) : data;
 
-      setEachPageData(paginate(filteredData, itemsPerPage));
-    } else {
-      setEachPageData([]);
-    }
-  }, [loading, data, itemsPerPage, debouncedInput]);
+  //     setEachPageData(paginate(filteredData, itemsPerPage));
+  //   } else {
+  //     setEachPageData([]);
+  //   }
+  // }, [loading, data, itemsPerPage, debouncedInput]);
+  const filteredData =
+    debouncedInput.length !== 0 ? matched(data, debouncedInput) : data;
 
+  const eachPageData =
+    Array.isArray(filteredData) && filteredData.length > 0
+      ? paginate(filteredData, itemsPerPage)
+      : [];
+  //****************************************************************************************** */
   useEffect(() => {
     if (!eachPageData || eachPageData.length === 0) return;
 
