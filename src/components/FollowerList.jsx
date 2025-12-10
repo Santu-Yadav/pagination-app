@@ -7,6 +7,7 @@ const FollowerList = ({
   prevPage,
   nextPage,
   page,
+  handlePage,
 }) => {
   return (
     <section className="followers">
