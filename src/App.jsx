@@ -1,8 +1,8 @@
 /* 17-11-2025 : implement case-insensitive prefix match */
 
 import { useState, useEffect } from "react";
-import { useFetch } from "./useFetch";
-import { useDebounce } from "./useDebounce";
+import { useFetch } from "./hooks/useFetch";
+import { useDebounce } from "./hooks/useDebounce";
 
 import SearchAndConfigHeader from "./components/SearchAndConfigHeader";
 import FollowerList from "./components/FollowerList";
