@@ -30,7 +30,6 @@ function App() {
   };
 
   const handleSearchBoxChange = (e) => {
-    console.log("search box change @@@@@ : ", e.target.value);
     setSearchInput(e.target.value);
   };
 
