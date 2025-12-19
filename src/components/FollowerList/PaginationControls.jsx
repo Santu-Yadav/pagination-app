@@ -1,3 +1,10 @@
+import Button from "./Button";
+
+// interface paginationControlProps {
+//   prevPage: () => voidl;
+//   eachPageData: []; // array of objects
+// }
+
 const PaginationControl = ({
   prevPage,
   eachPageData,
@@ -7,24 +14,24 @@ const PaginationControl = ({
 }) => {
   return (
     <div className="btn-container">
-      <button className="prev-btn" onClick={prevPage}>
+      <Button className="prev-btn" onClick={prevPage}>
         prev
-      </button>
+      </Button>
 
       {eachPageData.map((item, index) => {
         return (
-          <button
+          <Button
+            className={`page-btn ${index === page ? "active-btn" : ""}`}
             key={index}
-            className={`page-btn ${index === page ? "active-btn" : null}`}
             onClick={() => handlePage(index)}
           >
             {index + 1}
-          </button>
+          </Button>
         );
       })}
-      <button className="next-btn" onClick={nextPage}>
+      <Button className="next-btn" onClick={nextPage}>
         next
-      </button>
+      </Button>
     </div>
   );
 };

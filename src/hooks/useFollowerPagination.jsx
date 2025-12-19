@@ -48,6 +48,7 @@ export const useFollowerPagination = (debouncedInput, data, itemsPerPage) => {
   };
 
   const handlePage = (index) => {
+    console.log("handle page clicked !!");
     setPage(index);
   };
 
