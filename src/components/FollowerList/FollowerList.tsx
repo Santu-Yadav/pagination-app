@@ -1,5 +1,23 @@
-import Follower from "../../Follower";
-import PaginationControls from "./PaginationControls";
+import Follower from "../../Follower.jsx";
+import PaginationControls from "./PaginationControls.js";
+
+interface GitHubUser {
+  login: string;
+  id: number;
+  avatar_url: string;
+  html_url: string;
+  [key: string]: any;
+}
+
+interface FollowerListProps {
+  followers: GitHubUser[];
+  loading: boolean;
+  eachPageData: GitHubUser[][];
+  prevPage: () => void;
+  nextPage: () => void;
+  page: number;
+  handlePage: (i: number) => void;
+}
 
 const FollowerList = ({
   followers,
@@ -9,7 +27,7 @@ const FollowerList = ({
   nextPage,
   page,
   handlePage,
-}) => {
+}: FollowerListProps): React.JSX.Element => {
   if (loading) {
     return (
       <section className="followers">

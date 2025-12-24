@@ -1,9 +1,22 @@
-import Button from "./Button";
+// verify later : Button has converted to .tsx but still this component is imporrting it as .jsx. why?
 
-// interface paginationControlProps {
-//   prevPage: () => voidl;
-//   eachPageData: []; // array of objects
-// }
+import React from "react";
+import Button from "./Button.jsx";
+
+interface GitHubUser {
+  login: string;
+  id: number;
+  avatar_url: string;
+  [key: string]: any;
+}
+
+interface PaginationControlProps {
+  prevPage: () => void;
+  eachPageData: GitHubUser[][];
+  page: number;
+  handlePage: (i: number) => void;
+  nextPage: () => void;
+}
 
 const PaginationControl = ({
   prevPage,
@@ -11,7 +24,7 @@ const PaginationControl = ({
   page,
   handlePage,
   nextPage,
-}) => {
+}: PaginationControlProps): React.JSX.Element => {
   return (
     <div className="btn-container">
       <Button className="prev-btn" onClick={prevPage}>

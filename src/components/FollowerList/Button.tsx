@@ -4,7 +4,11 @@ interface buttonProps {
   onClick: () => void;
 }
 
-const Button = ({ className, onClick, children }: buttonProps) => {
+const Button = ({
+  className,
+  onClick,
+  children,
+}: buttonProps): React.JSX.Element => {
   return (
     <button className={className} onClick={onClick}>
       {children}

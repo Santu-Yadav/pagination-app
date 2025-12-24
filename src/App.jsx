@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react";
 
-import SearchAndConfigHeader from "./components/SearchAndConfigHeader/SearchAndConfigHeader";
-import FollowerList from "./components/FollowerList/FollowerList";
+import SearchAndConfigHeader from "./components/SearchAndConfigHeader/SearchAndConfigHeader.jsx";
+import FollowerList from "./components/FollowerList/FollowerList.jsx";
 
 import { useFetch } from "./hooks/useFetch";
-import { useFollowerPagination } from "./hooks/useFollowerPagination";
+import { useFollowerPagination } from "./hooks/useFollowerPagination.jsx";
 import { useDebounce } from "./hooks/useDebounce";
 
 function App() {
