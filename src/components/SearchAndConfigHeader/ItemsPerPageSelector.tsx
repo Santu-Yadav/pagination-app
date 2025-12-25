@@ -1,4 +1,14 @@
-const ItemsPerPageSelector = ({ handleDropDownChange, itemsPerPage }) => {
+import type React from "react";
+
+interface ItemsPerPageSelectorType {
+  handleDropDownChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  itemsPerPage: number;
+}
+
+const ItemsPerPageSelector = ({
+  handleDropDownChange,
+  itemsPerPage,
+}: ItemsPerPageSelectorType): React.JSX.Element => {
   return (
     <div>
       <label htmlFor="test">Items per page</label>

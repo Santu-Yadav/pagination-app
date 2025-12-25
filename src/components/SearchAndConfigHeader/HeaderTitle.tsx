@@ -1,4 +1,12 @@
-const HeaderTitle = ({ loading, eachPageDataLength }) => {
+interface HeaderTitleType {
+  loading: boolean;
+  eachPageDataLength: number;
+}
+
+const HeaderTitle = ({
+  loading,
+  eachPageDataLength,
+}: HeaderTitleType): React.JSX.Element => {
   let title;
   if (loading) {
     title = "loading...";

@@ -1,6 +1,6 @@
-import HeaderTitle from "./HeaderTitle";
-import ItemsPerPageSelector from "./ItemsPerPageSelector";
-import SearchBox from "./searchBox";
+import HeaderTitle from "./HeaderTitle.tsx";
+import ItemsPerPageSelector from "./ItemsPerPageSelector.tsx";
+import SearchBox from "./SearchBox.tsx";
 
 const SearchAndConfigHeader = ({
   searchInput,
