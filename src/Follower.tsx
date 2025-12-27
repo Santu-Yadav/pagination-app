@@ -1,4 +1,10 @@
-const Follower = ({ avatar_url, html_url, login }) => {
+interface FollowerType {
+  avatar_url: string;
+  html_url: string;
+  login: string;
+}
+
+const Follower = ({ avatar_url, html_url, login }: FollowerType) => {
   return (
     <article className="card">
       <img src={avatar_url} alt={login} />

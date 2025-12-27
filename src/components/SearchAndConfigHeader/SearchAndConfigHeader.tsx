@@ -1,6 +1,15 @@
-import HeaderTitle from "./HeaderTitle.tsx";
-import ItemsPerPageSelector from "./ItemsPerPageSelector.tsx";
-import SearchBox from "./SearchBox.tsx";
+import HeaderTitle from "./HeaderTitle.js";
+import ItemsPerPageSelector from "./ItemsPerPageSelector.js";
+import SearchBox from "./SearchBox.js";
+
+type SearchAndConfigHeaderType = {
+  searchInput: string;
+  handleSearchBoxChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  eachPageDataLength: number;
+  loading: boolean;
+  handleDropDownChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  itemsPerPage: number;
+};
 
 const SearchAndConfigHeader = ({
   searchInput,
@@ -9,7 +18,7 @@ const SearchAndConfigHeader = ({
   loading,
   handleDropDownChange,
   itemsPerPage,
-}) => {
+}: SearchAndConfigHeaderType): React.JSX.Element => {
   return (
     <div>
       <SearchBox
