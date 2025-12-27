@@ -1,30 +1,39 @@
-/* work next on this --> if number of followers returned is 7. Then, prev, next and pagination 
-button should not be displayed. 
+/* 17-11-2025 : implement case-insensitive prefix match */
 
-15-11-2025 : above mentioned features has been implemented. 
-*/
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useFetch } from "./useFetch";
 import Follower from "./Follower";
 import paginate from "./utils";
 
 function App() {
   const { loading, data } = useFetch();
-  const [eachPageData, setEachPageData] = useState([]);
+  // const [eachPageData, setEachPageData] = useState([]);
   const [page, setPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(8);
 
-  useEffect(() => {
-    if (loading) return;
+  const [searchInput, setSearchInput] = useState("");
+  const [debouncedInput, setDebouncedInput] = useState("");
 
-    if (Array.isArray(data) && data.length > 0) {
-      setEachPageData(paginate(data, itemsPerPage));
-    } else {
-      setEachPageData([]);
-    }
-  }, [loading, data, itemsPerPage]);
+  // useEffect(() => {
+  //   if (loading) return;
 
+  //   if (Array.isArray(data) && data.length > 0) {
+  //     let filteredData =
+  //       debouncedInput.length !== 0 ? matched(data, debouncedInput) : data;
+
+  //     setEachPageData(paginate(filteredData, itemsPerPage));
+  //   } else {
+  //     setEachPageData([]);
+  //   }
+  // }, [loading, data, itemsPerPage, debouncedInput]);
+  const filteredData =
+    debouncedInput.length !== 0 ? matched(data, debouncedInput) : data;
+
+  const eachPageData =
+    Array.isArray(filteredData) && filteredData.length > 0
+      ? paginate(filteredData, itemsPerPage)
+      : [];
+  //****************************************************************************************** */
   useEffect(() => {
     if (!eachPageData || eachPageData.length === 0) return;
 
@@ -33,6 +42,14 @@ function App() {
       setPage(0);
     }
   }, [eachPageData.length, page]);
+
+  useEffect(() => {
+    let timerId = setTimeout(() => {
+      setDebouncedInput(searchInput);
+    }, 1000);
+
+    return () => clearTimeout(timerId);
+  }, [searchInput]);
 
   let followers = [];
   if (eachPageData && eachPageData.length > 0) {
@@ -65,16 +82,45 @@ function App() {
   };
 
   const handleDropDownChange = (e) => {
-    console.log(" e.target.value @@ :", e.target.value);
     setItemsPerPage(parseInt(e.target.value, 10) || 8);
   };
 
+  const handleSearchBoxChange = (e) => {
+    console.log("search box change @@@@@ : ", e.target.value);
+    setSearchInput(e.target.value);
+  };
+
+  function matched(data, input) {
+    if (!Array.isArray(data)) return [];
+
+    const q = (input || "").trim().toLowerCase();
+    if (q.length === 0) return data;
+
+    return data.filter(({ login }) => {
+      const loginLower = login.toLowerCase();
+
+      if (q.length > loginLower.length) return false;
+
+      for (let i = 0; i < q.length; i++) {
+        if (q[i] !== loginLower[i]) return false;
+      }
+
+      return true;
+    });
+  }
+
   return (
     <main>
+      <div className="search-box">
+        <input
+          className="search-box-style"
+          value={searchInput}
+          placeholder="Search"
+          onChange={handleSearchBoxChange}
+        />
+      </div>
       <div className="section-title">
         <div>
-          {/* <h1>{loading ? "loading..." : "Followers"}</h1> */}
-
           <h1>
             {loading
               ? "loading..."
@@ -113,10 +159,6 @@ function App() {
               prev
             </button>
 
-            {console.log(
-              "eachPageData @@@--######--@@@ :",
-              eachPageData.length
-            )}
             {eachPageData.map((item, index) => {
               return (
                 <button
@@ -139,3 +181,9 @@ function App() {
 }
 
 export default App;
+
+//----------------------------------------------------------------------------------
+// {console.log(
+//   "eachPageData @@@--######--@@@ :",
+//   eachPageData.length
+// )}
