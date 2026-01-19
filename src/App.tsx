@@ -2,18 +2,18 @@
 
 import { useState, useEffect } from "react";
 
-import SearchAndConfigHeader from "./components/SearchAndConfigHeader/SearchAndConfigHeader.jsx";
-import FollowerList from "./components/FollowerList/FollowerList.jsx";
+import SearchAndConfigHeader from "./components/SearchAndConfigHeader/SearchAndConfigHeader.js";
+import FollowerList from "./components/FollowerList/FollowerList.js";
 
-import { useFetch } from "./hooks/useFetch";
+import { useFetch } from "./hooks/useFetch.tsx";
 import { useFollowerPagination } from "./hooks/useFollowerPagination.jsx";
-import { useDebounce } from "./hooks/useDebounce";
+import { useDebounce } from "./hooks/useDebounce.jsx";
 
 function App() {
-  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [itemsPerPage, setItemsPerPage] = useState<number>(8);
 
-  const [searchInput, setSearchInput] = useState("");
-  const [debouncedInput, setDebouncedInput] = useState("");
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [debouncedInput, setDebouncedInput] = useState<string>("");
 
   const { loading, data } = useFetch();
   const debouncedString = useDebounce(searchInput, 1000);
