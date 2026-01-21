@@ -1,13 +1,24 @@
 import { useState, useEffect } from "react";
-import { paginate, matched } from "../utils";
+import { paginate, matched } from "../utils.jsx";
 
-export const useFollowerPagination = (debouncedInput, data, itemsPerPage) => {
-  const [page, setPage] = useState(0);
+interface GitHubUser {
+  login: string;
+  id: number;
+  avatar_url: string;
+  html_url: string;
+}
 
-  const filteredData =
+export const useFollowerPagination = (
+  debouncedInput: string,
+  data: GitHubUser[],
+  itemsPerPage: number,
+) => {
+  const [page, setPage] = useState<number>(0);
+
+  const filteredData: GitHubUser[] =
     debouncedInput.length !== 0 ? matched(data, debouncedInput) : data;
 
-  const eachPageData =
+  const eachPageData: GitHubUser[][] =
     Array.isArray(filteredData) && filteredData.length > 0
       ? paginate(filteredData, itemsPerPage)
       : [];
@@ -15,16 +26,17 @@ export const useFollowerPagination = (debouncedInput, data, itemsPerPage) => {
   useEffect(() => {
     if (!eachPageData || eachPageData.length === 0) return;
 
-    const lastIndex = eachPageData.length - 1;
+    const lastIndex: number = eachPageData.length - 1;
     if (page > lastIndex) {
       setPage(0);
     }
   }, [eachPageData.length, page]);
 
-  let followers = [];
+  let followers: GitHubUser[] = [];
   if (eachPageData && eachPageData.length > 0) {
     const lastIndex = eachPageData.length - 1;
-    followers = page <= lastIndex ? eachPageData[page] : eachPageData[0];
+    followers =
+      (page <= lastIndex ? eachPageData[page] : eachPageData[0]) ?? [];
   }
 
   const nextPage = () => {
@@ -47,7 +59,7 @@ export const useFollowerPagination = (debouncedInput, data, itemsPerPage) => {
     });
   };
 
-  const handlePage = (index) => {
+  const handlePage = (index: number) => {
     console.log("handle page clicked !!");
     setPage(index);
   };

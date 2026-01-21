@@ -7,7 +7,7 @@ interface GitHubUser {
   html_url: string;
 }
 
-interface UseFetchResult {  
+interface UseFetchResult {
   loading: boolean;
   data: GitHubUser[];
 }

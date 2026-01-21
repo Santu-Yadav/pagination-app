@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import SearchAndConfigHeader from "./components/SearchAndConfigHeader/SearchAndConfigHeader.js";
 import FollowerList from "./components/FollowerList/FollowerList.js";
 
-import { useFetch } from "./hooks/useFetch.tsx";
+import { useFetch } from "./hooks/useFetch.jsx";
 import { useFollowerPagination } from "./hooks/useFollowerPagination.jsx";
 import { useDebounce } from "./hooks/useDebounce.jsx";
 
@@ -25,11 +25,11 @@ function App() {
   const { followers, nextPage, prevPage, handlePage, eachPageData, page } =
     useFollowerPagination(debouncedInput, data, itemsPerPage);
 
-  const handleDropDownChange = (e) => {
+  const handleDropDownChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setItemsPerPage(parseInt(e.target.value, 10) || 8);
   };
 
-  const handleSearchBoxChange = (e) => {
+  const handleSearchBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
 
